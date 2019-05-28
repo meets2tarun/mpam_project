@@ -118,7 +118,6 @@ def var_update():
     source.data = dict(x=data[date], y=data[var_name])
     # return var_name
 
-
 var_name = var_menu.on_change('value', var_change)
 
 alarm_menu = Select(value=alarm_list[0], options= alarm_list)
