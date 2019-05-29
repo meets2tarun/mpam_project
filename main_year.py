@@ -10,7 +10,7 @@ file_list = ['2015', '2016', '2017', '2018']
 #
 # Dynamic Data
 #
-file_name = file_list[-1] # reading 2018 Data_Unified.csv
+file_name = file_list[0] # reading 2018 Data_Unified.csv
 file_path = join(data_path, '{} Data_Unified.csv'.format(file_name))
 # file_path = join(data_path, 'Total.csv')
 
@@ -57,9 +57,19 @@ from bokeh.models import ColumnDataSource
 source_alarm = ColumnDataSource (dict(
             alarm_dt  = alarm_date,
             alarm_vl = alarm_value,
+            ))
+
+source_return = ColumnDataSource (dict(
             return_dt = return_date,
             return_vl = return_value
             ))
+
+# source_alarm = ColumnDataSource (dict(
+#             alarm_dt  = alarm_date,
+#             alarm_vl = alarm_value,
+#             return_dt = return_date,
+#             return_vl = return_value
+#             ))
 
 source = ColumnDataSource (dict(
             x = data[date],
@@ -67,7 +77,7 @@ source = ColumnDataSource (dict(
             ))
 
 from bokeh.plotting import figure
-p = figure(title = var_name,
+p = figure(title = file_name,
                 plot_height=300, plot_width=1300,
                 x_axis_type="datetime", y_axis_type=None,
                 tools="", toolbar_location=None, background_fill_color="#efefef",x_range=(data[date][1], data[date][10000]))#PLOT_OPTS)
@@ -78,7 +88,7 @@ p.line(
     alpha =0.6,
     source = source)#color = 'pink')
 p.circle(x = 'alarm_dt', y = 'alarm_vl' ,color="red",size=20,alpha=0.5,source=source_alarm)
-p.circle(x = 'return_dt', y = 'return_vl',color="blue" ,size=20,alpha=0.5,source=source_alarm)
+p.circle(x = 'return_dt', y = 'return_vl',color="blue" ,size=20,alpha=0.5,source=source_return)
 # ##################################
 #  Defining ranger
 ##################################3333333
@@ -97,7 +107,7 @@ select.line(
         alpha = 0.6,
         source=source)#,legend=var_name)
 select.circle(x = 'alarm_dt', y = 'alarm_vl' ,color="red",size=20,alpha=0.5,source=source_alarm)
-select.circle(x = 'return_dt', y = 'return_vl',color="blue" ,size=20,alpha=0.5,source=source_alarm)
+select.circle(x = 'return_dt', y = 'return_vl',color="blue" ,size=20,alpha=0.5,source=source_return)
 
 select.ygrid.grid_line_color = None
 select.add_tools(range_tool)
@@ -132,8 +142,10 @@ def alarm_update():
     startTime = data[date].min()  # start time of plot
     endTime = data[date].max()  # end time of plot
     alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
-    source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value,return_dt = return_date,return_vl = return_value)
-
+    # source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value,return_dt = return_date,return_vl = return_value)
+    # alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
+    source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value)
+    source_return.data = dict(return_dt = return_date,return_vl = return_value)
 alarm_menu.on_change('value', alarm_change)
 alarm_update()
 
