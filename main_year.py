@@ -134,20 +134,25 @@ alarm_menu = Select(value=alarm_list[0], options= alarm_list)
 
 def alarm_change(attrname, old, new):
     alarm_name = alarm_menu.value
-    # print(var_name)
-    alarm_update()
-
-def alarm_update():
-    alarm_name = alarm_menu.value
     startTime = data[date].min()  # start time of plot
     endTime = data[date].max()  # end time of plot
     alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
-    # source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value,return_dt = return_date,return_vl = return_value)
-    # alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
     source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value)
     source_return.data = dict(return_dt = return_date,return_vl = return_value)
+    # print(var_name)
+#    alarm_update()
+
+# def alarm_update():
+#     alarm_name = alarm_menu.value
+#    startTime = data[date].min()  # start time of plot
+#    endTime = data[date].max()  # end time of plot
+#    alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
+    # source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value,return_dt = return_date,return_vl = return_value)
+    # alarm_date, return_date, alarm_value, return_value = get_AlarmNreturnVals(alarmTable, alarm_name, startTime, endTime)
+#    source_alarm.data = dict(alarm_dt  = alarm_date,alarm_vl = alarm_value)
+#    source_return.data = dict(return_dt = return_date,return_vl = return_value)
 alarm_menu.on_change('value', alarm_change)
-alarm_update()
+#alarm_update()
 
 
 from bokeh.io import curdoc
@@ -158,3 +163,4 @@ layout = column(p,select,row(var_menu,alarm_menu))
 var_update()
 curdoc().add_root(layout)
 curdoc()
+
